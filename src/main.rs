@@ -48,6 +48,7 @@ fn main() {
             create_account(&mut info);
             
         }else if choose==2 {
+            deposit(&mut info);
             
         }else if choose==3 {
             
@@ -202,6 +203,77 @@ fn show_account(info:&mut HashMap<String,Account>){
         }
 
     }
+
+
+
+}
+
+
+
+// Deposit
+
+fn deposit(info:&mut HashMap<String,Account>){
+    println!("If you wish to make a deposit, please provide the following information.");
+
+    let mut account:String=String::new();
+    print!("write your account number : ");
+    io::stdout().flush().unwrap();
+
+    io::stdin().read_line(&mut account).unwrap();
+    let account:String=account.trim().to_string();
+
+    match info.get(&account) {
+        Some(e)=>{
+           println!("account found 👍");
+           //todo:fix this err
+           check(&e.password,&info);
+
+        }
+        None =>{
+                       println!("account  not found 😔");
+
+        }
+    }
+
+    // check password 
+    fn check(pass:&String,info: &mut HashMap<String, Account>){
+        let mut password:String=String::new();
+
+        let mut count:i32=0;
+
+        loop{
+    print!("enter password for the account :");
+        io::stdout().flush().unwrap();
+
+        io::stdin().read_line(&mut password).unwrap();
+
+        let password :String=password.trim().to_string();
+
+        if pass==&password{
+            println!("your password is correct 😀");
+            start_deposit(info);
+
+            break;
+        }else if count==3 {
+              println!("You have made 3 incorrect attempts ❌");
+              break;
+        }
+        else {
+            println!("your password is not correct 😔 ,Remaining attempts{}",3-count);
+            count+=1;
+        }
+        }
+    
+
+
+    }
+
+    fn start_deposit(info:&mut HashMap<String,Account>){
+
+    }
+
+
+
 
 
 
