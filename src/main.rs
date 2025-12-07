@@ -94,23 +94,28 @@ fn create_account(info:&mut HashMap<String,Account>){
     io::stdin().read_line(&mut name).unwrap();
     let name:String=name.trim().to_string();
 
-    print!("Write your email :");
+   
+
+    let  email:String=loop{
+
+     print!("Write your email :");
     io::stdout().flush().unwrap();
 
-    let mut email:String =String::new();
+    let mut e:String =String::new();
+   
+    io::stdin().read_line(&mut e).unwrap();
 
-loop{
-    io::stdin().read_line(&mut email).unwrap();
-    let email=email.trim().to_string();
+    let e=e.trim().to_string();
 
-   if email.contains('@'){
+   if e.contains('@'){
+   break e;
 
-break;
+
    }else {
       println!("Write your email :");
        println!("your email don't have @")
    }
-}
+};
 
 
 
@@ -127,7 +132,7 @@ break;
     let user:Account=Account { 
         id :id,
          name:name.to_string(),
-          email:email,
+          email:email.clone(),
           password:password,
            blance:0.0
     };
@@ -222,11 +227,13 @@ fn deposit(info:&mut HashMap<String,Account>){
     io::stdin().read_line(&mut account).unwrap();
     let account:String=account.trim().to_string();
 
-    match info.get(&account) {
+    match info.get_mut(&account) {
         Some(e)=>{
            println!("account found 👍");
            //todo:fix this err
-           check(&e.password,&info);
+           if check(&e.password){
+            start_deposit(e);
+           };
 
         }
         None =>{
@@ -235,8 +242,20 @@ fn deposit(info:&mut HashMap<String,Account>){
         }
     }
 
-    // check password 
-    fn check(pass:&String,info: &mut HashMap<String, Account>){
+ 
+
+   
+
+
+
+
+
+
+}
+
+
+   // check password 
+    fn check(real_password:&String)->bool{
         let mut password:String=String::new();
 
         let mut count:i32=0;
@@ -249,14 +268,14 @@ fn deposit(info:&mut HashMap<String,Account>){
 
         let password :String=password.trim().to_string();
 
-        if pass==&password{
+        if real_password==&password{
             println!("your password is correct 😀");
-            start_deposit(info);
+            return  true;
 
-            break;
+           
         }else if count==3 {
               println!("You have made 3 incorrect attempts ❌");
-              break;
+            return  false;
         }
         else {
             println!("your password is not correct 😔 ,Remaining attempts{}",3-count);
@@ -268,13 +287,10 @@ fn deposit(info:&mut HashMap<String,Account>){
 
     }
 
-    fn start_deposit(info:&mut HashMap<String,Account>){
+
+
+     fn start_deposit(info:&mut Account){
+
+        println!("Enter the amount you want to add to your account")
 
     }
-
-
-
-
-
-
-}
