@@ -180,7 +180,7 @@ fn show_account(info:&mut HashMap<String,Account>){
     match info.get(&account){
         Some(e) =>{
             println!("account found");
-            println!("the account is : {:?}", e);
+            // println!("the account is : {:?}", e);
             check(&e.password,e);
 
         }
@@ -256,11 +256,12 @@ fn deposit(info:&mut HashMap<String,Account>){
 
    // check password 
     fn check(real_password:&String)->bool{
-        let mut password:String=String::new();
 
         let mut count:i32=0;
 
         loop{
+                    let mut password:String=String::new();
+
     print!("enter password for the account :");
         io::stdout().flush().unwrap();
 
@@ -290,7 +291,32 @@ fn deposit(info:&mut HashMap<String,Account>){
 
 
      fn start_deposit(info:&mut Account){
+        println!("your account is {}",info.id);
 
-        println!("Enter the amount you want to add to your account")
+        print!("Enter the amount you want to add to your account :");
+        io::stdout().flush().unwrap();
+
+
+        let mut amount:String=String::new();
+        io::stdin().read_line(&mut amount).unwrap();
+
+        let amount:f64= match amount.trim().parse(){
+            Ok(e)=>e,
+            Err(r)=>{
+println!("error {}",r);
+return;
+            }
+        };
+
+
+        info.blance+=amount;
+
+        println!("✅ Amount added successfully!");
+         println!("💰 New balance: {}",info.blance);
+
+
+        
+
+
 
     }
