@@ -51,7 +51,7 @@ fn main() {
             deposit(&mut info);
             
         }else if choose==3 {
-            
+            withdraw_account(&mut info);
         }else if choose==4 {
             
         }else if choose==5 {
@@ -318,5 +318,34 @@ return;
         
 
 
+
+    }
+
+
+
+    fn withdraw_account(info:&mut HashMap<String,Account>){
+        println!("start Withdraw from your account :");
+
+        let mut account :String=String::new();
+        print!("Enter your account number :");
+        io::stdout().flush().unwrap();
+
+        io::stdin().read_line(&mut account).unwrap();
+        let account:String =account.trim().to_string();
+
+        match info.get_mut(&account) {
+            Some(e)=>{
+               if check(&e.password){
+                    start_withdraw(&e);
+               }
+            },
+            None =>print!("not found this account {}",account)
+        }
+
+
+    }
+
+    //todo fix error here 
+    fn start_withdraw(info:&mut Account){
 
     }
