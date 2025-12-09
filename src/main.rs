@@ -386,7 +386,7 @@ fn transfer(info:&mut HashMap<String,Account>){
     }
 }
 
-
+//todo:fix error here:
 fn transfer_account(info:&mut HashMap<String,Account>){
 
     let mut account:String=String::new();
