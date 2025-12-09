@@ -336,10 +336,10 @@ return;
         match info.get_mut(&account) {
             Some(e)=>{
                if check(&e.password){
-                    start_withdraw(&e);
+                    start_withdraw(e);
                }
             },
-            None =>print!("not found this account {}",account)
+            None =>println!("not found this account {}",account)
         }
 
 
@@ -347,5 +347,19 @@ return;
 
     //todo fix error here 
     fn start_withdraw(info:&mut Account){
+        let mut amount:String =String::new();
+         print!("Enter the amount you want to withdraw :");
+         io::stdout().flush().unwrap();
 
+         io::stdin().read_line(&mut amount).unwrap();
+
+         let amount:f64=amount.trim().parse().unwrap();
+
+        if info.blance>amount{
+            info.blance-=amount;
+            println!("This amount was successfully withdrawn : {}",amount);
+            println!("Your new balance : {}",info.blance);
+
+
+        }
     }
