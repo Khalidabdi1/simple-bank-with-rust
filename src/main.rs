@@ -53,7 +53,7 @@ fn main() {
         }else if choose==3 {
             withdraw_account(&mut info);
         }else if choose==4 {
-            
+            transfer(&mut info)
         }else if choose==5 {
             show_account(&mut info);
             
@@ -363,3 +363,47 @@ return;
 
         }
     }
+
+
+fn transfer(info:&mut HashMap<String,Account>){
+    let mut account:String=String::new();
+    println!("Enter your bank account number :");
+    io::stdout().flush().unwrap();
+
+    io::stdin().read_line(&mut account).unwrap();
+
+    
+
+    match info.get_mut(&account){
+        Some(e)=>{
+            if  check(&e.password){
+                transfer_account(e);
+            }
+            
+             
+        },
+        None=> println!("Account not found !")
+    }
+}
+
+
+fn transfer_account(info:&mut HashMap<String,Account>){
+
+    let mut account:String=String::new();
+
+
+    print!("Enter the account you want to transfer to :");
+    io::stdout().flush().unwrap();
+
+    io::stdin().read_line(&mut account).unwrap();
+
+    let account:String=account.trim().to_string();
+
+    match info.get(&account){
+        Some(e)=>{
+            println!("{}",e);
+        }
+        None=>println!("this account not found")
+    }
+
+}
