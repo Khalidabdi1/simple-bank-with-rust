@@ -367,17 +367,17 @@ return;
 
 fn transfer(info:&mut HashMap<String,Account>){
     let mut account:String=String::new();
-    println!("Enter your bank account number :");
+    print!("Enter your bank account number :");
     io::stdout().flush().unwrap();
 
     io::stdin().read_line(&mut account).unwrap();
 
-    
+    let mut account=account.trim().to_string(); 
 
     match info.get_mut(&account){
         Some(e)=>{
             if  check(&e.password){
-                transfer_account(e);
+                transfer_account(info,account);
             }
             
              
@@ -386,8 +386,14 @@ fn transfer(info:&mut HashMap<String,Account>){
     }
 }
 
-//todo:fix error here:
-fn transfer_account(info:&mut HashMap<String,Account>){
+//todo:sand and amount:
+fn transfer_account(info:&mut HashMap<String,Account>,sand:& String){
+    print!("Enter the amount you want to send :");
+
+    let mut amount:String=String::new();
+    io::stdout().flush().unwrap();
+
+    io::stdin().read_line(&mut amount).unwrap();
 
     let mut account:String=String::new();
 
@@ -399,9 +405,20 @@ fn transfer_account(info:&mut HashMap<String,Account>){
 
     let account:String=account.trim().to_string();
 
-    match info.get(&account){
+    let amount:f64=amount.trim().parse().unwrap();
+
+    match info.get_mut(&account){
         Some(e)=>{
-            println!("{}",e);
+            if e.blance>amount {
+                e.blance+=amount;
+            }else if e.blance==amount {
+                  e.blance+=amount;
+                  //600<500
+            }else if e.blance<amount{
+                println!("You do not have enough credit beacuse your blance is {} and you want to sand {}......",e.blance,amount)
+            }
+          
+            println!("{:?}",e);
         }
         None=>println!("this account not found")
     }
