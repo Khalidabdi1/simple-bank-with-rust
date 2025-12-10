@@ -386,7 +386,7 @@ fn transfer(info:&mut HashMap<String,Account>){
     }
 }
 
-//todo:sand and amount:
+//todo: need to make sand attbutes for this function  :
 fn transfer_account(info:&mut HashMap<String,Account>,sand:& String){
     print!("Enter the amount you want to send :");
 
