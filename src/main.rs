@@ -372,12 +372,12 @@ fn transfer(info:&mut HashMap<String,Account>){
 
     io::stdin().read_line(&mut account).unwrap();
 
-    let mut account=account.trim().to_string(); 
+    let  account=account.trim().to_string(); 
 
     match info.get_mut(&account){
         Some(e)=>{
             if  check(&e.password){
-                transfer_account(info,account);
+                transfer_account(info,&account);
             }
             
              
@@ -388,6 +388,9 @@ fn transfer(info:&mut HashMap<String,Account>){
 
 //todo: need to make sand attbutes for this function  :
 fn transfer_account(info:&mut HashMap<String,Account>,sand:& String){
+    
+
+   
     print!("Enter the amount you want to send :");
 
     let mut amount:String=String::new();
@@ -407,20 +410,52 @@ fn transfer_account(info:&mut HashMap<String,Account>,sand:& String){
 
     let amount:f64=amount.trim().parse().unwrap();
 
-    match info.get_mut(&account){
-        Some(e)=>{
-            if e.blance>amount {
-                e.blance+=amount;
-            }else if e.blance==amount {
-                  e.blance+=amount;
-                  //600<500
-            }else if e.blance<amount{
-                println!("You do not have enough credit beacuse your blance is {} and you want to sand {}......",e.blance,amount)
-            }
-          
-            println!("{:?}",e);
+
+   let has_sander =info.contains_key(sand);
+   if !has_sander{
+    println!("sander not found ");
+    return;
+   }
+
+   let has_recever=info.contains_key(&account);
+       if !has_recever{
+        println!("recevier not found ");
+        return;
+       }
+   
+    let enough;
+
+    {
+        let sender_acc =info.get(sand).unwrap();
+        if sender_acc.blance<amount{
+            println!("❌ Not enough balance. Your balance is {}",sender_acc.blance);
         }
-        None=>println!("this account not found")
+
+        enough=true
     }
+
+    if !enough{
+        return
+    }
+
+    {
+        let sender_acc=info.get_mut(sand).unwrap();
+        if sender_acc.blance<amount{
+            println!("you don't have blance {}",amount);
+        }else {
+                   sender_acc.blance-=amount;
+ 
+        }
+        println!("the amount transfer ,your new blance is {}",sender_acc.blance)
+    }
+
+    {
+        let resevier =info.get_mut(&account).unwrap();
+        resevier.blance+=amount;
+         println!("✅ Transfer completed successfully!");
+    }
+
+
+   
 
 }
